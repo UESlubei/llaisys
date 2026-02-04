@@ -39,6 +39,7 @@ load_runtime(LIB_LLAISYS)
 load_tensor(LIB_LLAISYS)
 load_ops(LIB_LLAISYS)
 
+from .models import *
 
 __all__ = [
     "LIB_LLAISYS",

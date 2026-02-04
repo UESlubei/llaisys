@@ -74,7 +74,9 @@ target("llaisys-tensor")
     if not is_plat("windows") then
         add_cxflags("-fPIC", "-Wno-unknown-pragmas")
     end
-
+    if is_plat("windows") then
+        add_cxflags("/wd4267") -- 忽略 C4267 警告
+    end
     add_files("src/tensor/*.cpp")
 
     on_install(function (target) end)
@@ -95,6 +97,28 @@ target("llaisys-ops")
     on_install(function (target) end)
 target_end()
 
+-- 添加模型
+target("llaisys-models")
+    set_kind("static")
+    add_deps("llaisys-tensor")
+    add_deps("llaisys-ops")
+
+    add_deps("llaisys-core") -- 可能需要 context 等
+    add_deps("llaisys-utils")
+
+    set_languages("cxx17")
+    set_warnings("all", "error")
+    if not is_plat("windows") then
+        add_cxflags("-fPIC", "-Wno-unknown-pragmas")
+    end
+
+    -- 编译所有模型实现
+    add_files("src/models/*/*.cpp")
+    -- 仿照类似安装
+    on_install(function (target) end)
+target_end()
+
+
 target("llaisys")
     set_kind("shared")
     add_deps("llaisys-utils")
@@ -102,6 +126,8 @@ target("llaisys")
     add_deps("llaisys-core")
     add_deps("llaisys-tensor")
     add_deps("llaisys-ops")
+    add_deps("llaisys-models")
+
 
     set_languages("cxx17")
     set_warnings("all", "error")
