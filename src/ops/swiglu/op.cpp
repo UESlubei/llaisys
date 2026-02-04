@@ -19,7 +19,7 @@ void swiglu_impl(tensor_t out, tensor_t gate, tensor_t up) {
         // Swish / SiLU: x * sigmoid(x)
         float swish = g / (1.0f + std::exp(-g));
         
-        // SwiGLU: swish(gate) * up
+        
         out_ptr[i] = utils::cast<T>(swish * u);
     }
 }
